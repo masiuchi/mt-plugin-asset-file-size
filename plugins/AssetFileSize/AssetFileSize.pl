@@ -9,7 +9,7 @@ my $plugin = __PACKAGE__->new({
     id          => lc $NAME,
     key         => lc $NAME,
     l10n_class  => $NAME . '::L10N',
-    version     => '0.01',
+    version     => '0.02',
     author_name => 'masiuchi',
     author_link => 'https://github.com/masiuchi',
     plugin_link => 'https://github.com/masiuchi/mt-plugin-asset-file-size',
@@ -19,8 +19,14 @@ MT->add_plugin( $plugin );
 
 sub init_registry {
     my ( $p ) = @_;
-    $p->registry( 'tags', 'function', {
-        AssetFileSize => '$'.$NAME.'::'.$NAME.'::Tags::asset_file_size',
+    my $pkg = '$'.$NAME.'::'.$NAME.'::';
+    $p->registry( 'tags', {
+        function => {
+            AssetFileSize     => $pkg . 'Tags::asset_file_size',
+        },
+        block => {
+            'IfAssetFileSize' => $pkg . 'Tags::if_asset_file_size',
+        },
     } );
 }
 
